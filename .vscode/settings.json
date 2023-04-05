@@ -1,0 +1,6 @@
+{
+    "cmake.sourceDirectory": "${workspaceFolder}/Step1",
+    "files.associations": {
+        "string": "cpp"
+    }
+}
