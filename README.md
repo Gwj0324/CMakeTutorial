@@ -5,10 +5,12 @@
 CMake是一个管理构建源代码的工具。起初，CMake是被设计当做各种各样的Makefile方言的生成器。现在，CMake可以生成`Ninja`等现代构建系统，还可以生成Visual Studio、Xcode等IDE的项目文件。
 
 - 第一步：起点
-
   - 练习1-构建一个项目
-
+  - 练习2-指定C++标准
+  - 练习3-添加一个版本号并配置头文件
 - 第二步：添加库
+  - 练习1-创建一个库
+  - 练习2-使库变成可选择的
 - 第三步：添加库的使用要求
 - 第四步：添加生成器表达式
 - 第五步：安装和测试
@@ -68,4 +70,97 @@ cmake --build .
 
 ### 练习2-指定C++标准
 
-CMake有一些特殊的变量，它们
+CMake有一些特殊的变量，它们要么是在幕后创建的，要么在我们编写`CMakeLists.txt`时对CMake有意义。这些特殊变量很多都是由 `CMAKE_` 开头的，所以你在编写`CMakeLists.txt`创建自己项目的变量时要注意避开这种命名方式。接下来介绍两个用户可以设置属性的特殊变量：`CMAKE_CXX_STANDARD`和`CMAKE_CXX_STANDARD_REQUIRED`。他们被用来指定构建项目所需要的C++标准。
+
+例子：指定项目的C++标准要求为11。
+我们需要在`add_executable()`之前添加声明。
+
+```cmake
+cmake_minimum_required(VERSION 3.10)
+project(Tutorial)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED true)
+
+add_executable(Tutorial tutorial.cpp)
+```
+
+### 练习3-添加一个版本号并配置头文件
+
+有时候，你在`CMakeLists.txt`定义了一个变量，并且想要这个变量也能在代码中使用，这或许能方便地解决一些问题。例如，将`CMakeLists.txt`中定义的版本号用在代码中。
+
+我们可以使用配置的头文件来实现这一目的。首先需要创建一个输入文件，这个文件里面有一个或多个要替换的变量。这些变量有着特殊的语法，如：`@VAR@`。然后，我们使用`configure_file()`命令去复制输入文件到一个给定的输出文件中，并用`CMakeLists.txt`文件中的`VAR`变量的当前值替换这些变量。
+
+虽然我们可以直接在源代码中编辑版本号，但是使用这种方法有好处。因为它创建一个单一的真实数据源并且避免了复杂性。
+
+例子：声明版本号为1.0（主版本号为1，次版本号为0）
+
+```cmake
+cmake_minimum_required(VERSION 3.10)
+project(Tutorial)
+
+project(Tutorial VERSION 1.0)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED true)
+
+configure_file(TutorialConfig.h.in TutorialConfig.h)
+
+add_executable(Tutorial tutorial.cpp)
+
+target_include_directories(Tutorial PUBLIC ${PROJECT_BINARY_DIR})
+```
+
+>注：CMake中的版本号组成部分：\<Major>.\<Minor>.\<Patch>.\<Tweek>
+
+首先，使用`project()`命令设置项目名称和版本号。当此命令被调用，CMake会在幕后定义变量`<PROJECT-NAME>_VERSION_MAJOR`和变量`<PROJECT-NAME>_VERSION_MINOR`。
+
+接着，使用`configure_file()`命令去复制被具体的CMake变量替换后的输入文件。
+
+因为配置文件将被写入项目二进制目录中，我们必须将这个项目二进制目录添加到搜索包含文件的路径列表中去。
+
+>注：在本次教程中，项目二进制目录和项目构建目录是相同的意思。
+
+我们使用`target_include_directories()`来指定包含路径，可执行程序将从这个路径寻找头文件。
+
+我们在`TutorialConfig.h.in`文件中配置相关变量。当`CMakeLists.txt`中的`configure_file()`命令被调用，`TutorialConfig.h`文件中，变量`@<PROJECT-NAME>_VERSION_MAJOR@`和变量`@<PROJECT-NAME>_VERSION_MINOR@`将被指定的版本号数字替换掉。
+
+`TutorialConfig.h.in`文件：
+
+```c
+#define Tutorial_VERSION_MAJOR @Tutorial_VERSION_MAJOR@
+#define Tutorial_VERSION_MINOR @Tutorial_VERSION_MINOR@
+```
+
+替换后生成的`TutorialConfig.h`文件：
+
+```c
+#define Tutorial_VERSION_MAJOR 1
+#define Tutorial_VERSION_MINOR 0
+```
+
+然后，在你的主程序中引用`TutorialConfig.h`文件，就可以获取到版本号了。
+
+## 第二步：添加库
+
+这一节，我们将学习如何去创建一个库，并在我们的项目中使用这个库。我们也会学到怎么让库的使用变成可选择的。
+
+### 练习1-创建一个库
+
+
+
+### 练习2-使库变成可选择的
+
+
+## 第三步：添加库的使用要求
+
+
+## 第四步：添加生成器表达式
+## 第五步：安装和测试
+## 第六步：添加对测试仪表板的支持
+## 第七步：添加系统自检
+## 第八步：添加定制命令和生成文件
+## 第九步：打包安装程序
+## 第十步：选择静态库还是共享库（动态库）
+## 第十一步：添加导出配置
+## 第十二步：打包调试和发布

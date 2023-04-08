@@ -22,7 +22,7 @@ configure_file(TutorialConfig.h.in TutorialConfig.h)
 # to EXTRA_LIBS and EXTRA_INCLUDES if USE_MYMATH is true.
 
 # TODO 2: Use add_subdirectory() to add MathFunctions to this project
-
+add_subdirectory(MathFunctions)
 # add the executable
 add_executable(Tutorial tutorial.cxx)
 
@@ -30,10 +30,10 @@ add_executable(Tutorial tutorial.cxx)
 # in target_link_libraries.
 
 # TODO 3: Use target_link_libraries to link the library to our executable
-
+target_link_libraries(Tutorial MathFunctions)
 # TODO 4: Add MathFunctions to Tutorial's target_include_directories()
 # Hint: ${PROJECT_SOURCE_DIR} is a path to the project source. AKA This folder!
-
+target_include_directories(Tutorial PUBLIC ${PROJECT_SOURCE_DIR}/MathFunctions) 
 # TODO 10: Use EXTRA_INCLUDES instead of the MathFunctions specific values
 # in target_include_directories.
 

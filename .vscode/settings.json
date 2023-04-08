@@ -1,6 +1,7 @@
 {
-    "cmake.sourceDirectory": "${workspaceFolder}/Step1",
+    "cmake.sourceDirectory": "${workspaceFolder}/Step2",
     "files.associations": {
-        "string": "cpp"
+        "string": "cpp",
+        "*.in": "cpp"
     }
 }

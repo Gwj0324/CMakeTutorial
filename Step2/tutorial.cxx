@@ -8,9 +8,10 @@
 // TODO 11: Only include MathFunctions if USE_MYMATH is defined
 
 // TODO 5: Include MathFunctions.h
-
+#include "MathFunctions.h"
 int main(int argc, char* argv[])
 {
+  std::cout<<"STEP2"<<std::endl;
   if (argc < 2) {
     // report version
     std::cout << argv[0] << " Version " << Tutorial_VERSION_MAJOR << "."
