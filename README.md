@@ -2,7 +2,7 @@
 
 ## 简介
 
-CMake是一个构建系统生成器，可以使用单个CMakeLists.txt为不同平台上的不同工具集配置项目。您可以在CMakeLists.txt中描述构建系统必须运行的操作，以配置并编译代码。基于这些指令，CMake将为所选的构建系统(Unix Makefile、Ninja、Visual Studio等等)生成相应的指令。
+CMake是一个构建系统生成器，可以使用单个`CMakeLists.txt`为不同平台上的不同工具集配置项目。您可以在`CMakeLists.txt`中描述构建系统必须运行的操作，以配置并编译代码。基于这些指令，CMake将为所选的构建系统(Unix Makefile、Ninja、Visual Studio等等)生成相应的指令。
 
 - [第一步：起点](Tutorial1.md#第一步：起点)
   - 练习1-构建一个项目
